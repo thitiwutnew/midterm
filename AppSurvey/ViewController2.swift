@@ -53,8 +53,7 @@ var db: OpaquePointer?
         
         //traversing through all the records
         while(sqlite3_step(stmt) == SQLITE_ROW){
-            let id = sqlite3_column_int(stmt, 0)
-            viewdata.text?.append("ID : \(id)\n")
+            
             
             let datesss = String(cString: sqlite3_column_text(stmt, 1))
             viewdata.text?.append("วันที่ : \(datesss)\n")
@@ -66,7 +65,16 @@ var db: OpaquePointer?
             viewdata.text?.append("สินค้า : \(product)\n")
             
             let likesss = String(cString: sqlite3_column_text(stmt, 4))
-            viewdata.text?.append("ความพึ่งพอใจ : \(likesss)\n")
+            if(likesss=="3"){
+                        viewdata.text?.append("ความพึ่งพอใจ : ชอบมาก \n")
+            }
+            if(likesss=="2"){
+                viewdata.text?.append("ความพึ่งพอใจ : เฉยๆ \n")
+            }
+            if(likesss=="1"){
+                viewdata.text?.append("ความพึ่งพอใจ : ไม่ชอบ \n")
+            }
+    
             viewdata.text?.append("=================================\n")
             //adding values to list
         }
