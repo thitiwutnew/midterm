@@ -30,12 +30,51 @@ var db: OpaquePointer?
             let errmsg = String(cString: sqlite3_errmsg(db)!)
             print("error creating table: \(errmsg)")
         }
-        
+        count ()
         readValues()
     }
-    func readValues(){
+    func count (){
         viewdata.text=""
         //first empty the list of heroes
+        
+        var liketotle: Int = 0 ;
+        var nomaltotle: Int = 0;
+        var badtotle: Int = 0;
+        //this is our select query
+        let queryString = "SELECT * FROM Surveydatas"
+        
+        //statement pointer
+        var stmt:OpaquePointer?
+        
+        //preparing the query
+        if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("error preparing insert: \(errmsg)")
+            return
+        }
+        
+        while(sqlite3_step(stmt) == SQLITE_ROW){
+            
+         
+            
+            let likesss = String(cString: sqlite3_column_text(stmt, 4))
+            if(likesss=="3"){
+                liketotle = liketotle+1;
+            }
+            if(likesss=="2"){
+                   nomaltotle = nomaltotle+1;
+            }
+            if(likesss=="1"){
+                  badtotle = badtotle+1;
+            }
+            
+           
+            //adding values to list
+        }
+         viewdata.text?.append(" สรุป ชอบมาก= \(badtotle)    เฉยๆ= \(nomaltotle)    ไม่ชอบ= \(badtotle)\n\n\n")
+    }
+    func readValues(){
+       
         
         
         //this is our select query
